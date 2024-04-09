@@ -4,6 +4,7 @@ public class SettingsFrame extends JFrame implements Runnable {
 
     private DrawPanel p;
     private Thread windowThread;
+    private static boolean isOpen = false;
 
     public SettingsFrame(String display) {
         super(display);
@@ -16,7 +17,7 @@ public class SettingsFrame extends JFrame implements Runnable {
         this.setLocation(1100, 100);
         this.setVisible(true);
         startThread();
-
+        isOpen = true;
     }
 
     public void startThread() {

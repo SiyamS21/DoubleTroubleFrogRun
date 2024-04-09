@@ -37,10 +37,11 @@ class DrawPanel extends JPanel implements MouseListener {
 
     public void mousePressed(MouseEvent e) {
         Point clicked = e.getPoint();
+        SettingsFrame settings = null;
 
         if (e.getButton() == 1) {
-            if (settingsButton.contains(clicked)) {
-                SettingsFrame settings = new SettingsFrame("Settings");
+            if (settingsButton.contains(clicked) && settings == null) {
+                settings = new SettingsFrame("Settings");
             }
         }
     }
