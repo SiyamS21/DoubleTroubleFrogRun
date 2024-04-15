@@ -1,11 +1,11 @@
 public class Tile {
-    private String type;
+    private int lane;
 
-    public Tile(String t) {
-        type = t;
+    public Tile(int l) {
+        lane = l;
     }
 
-    public String getType() {
-        return type;
+    public int getLane() {
+        return lane;
     }
 }
