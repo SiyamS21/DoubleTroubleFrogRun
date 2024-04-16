@@ -10,4 +10,6 @@ public class Frog {
     public boolean isFirst() {
         return first;
     }
+
+    public String getColor() { return color; }
 }
