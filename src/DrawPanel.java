@@ -17,7 +17,14 @@ class DrawPanel extends JPanel implements MouseListener {
     private Rectangle playButton;
     private Rectangle helpButton;
     private Rectangle closeButton;
-    private boolean pressedPlay;
+    private enum STATE {
+        MENU,
+        LEVELSELECT,
+        GAME,
+        SETTINGS,
+        HELP
+    }
+    private STATE currentState = STATE.MENU;
 
 
 
@@ -45,56 +52,45 @@ class DrawPanel extends JPanel implements MouseListener {
             System.out.println(e);
             closeImage = null;
         }
-        pressedPlay = false;
     }
 
-    private enum STATE {
-        MENU,
-        LEVELSELECT,
-        GAME,
-        SETTINGS,
-        HELP
-    }
-
-    private STATE currentState = STATE.MENU;
 
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setFont(new Font("Courier New", Font.BOLD, 20));
-        if (pressedPlay) {
-            g.drawString("look", 100, 100);
+        if (currentState == STATE.MENU) {
             g.drawRect((int)settingsButton.getX(), (int)settingsButton.getY(), (int)settingsButton.getWidth(), (int)settingsButton.getHeight());
             g.drawImage(settingsImage, (int)settingsButton.getX(), (int)settingsButton.getY(), null);
             g.drawRect((int)helpButton.getX(), (int)helpButton.getY(), (int)helpButton.getWidth(), (int)helpButton.getHeight());
             g.drawImage(helpImage, (int)helpButton.getX(), (int)helpButton.getY(), null);
+            g.drawRect((int)playButton.getX(), (int)playButton.getY(), (int)playButton.getWidth(), (int)playButton.getHeight());
+            g.drawString("PLAY", (int)playButton.getX() + 25, (int)playButton.getY() + 20);
         }
         if (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT) {
             g.drawRect((int)closeButton.getX(), (int)closeButton.getY(), (int)closeButton.getWidth(), (int)closeButton.getHeight());
             g.drawImage(closeImage, (int)closeButton.getX(), (int)closeButton.getY(), null);
         }
-        g.drawRect((int)playButton.getX(), (int)playButton.getY(), (int)playButton.getWidth(), (int)playButton.getHeight());
-        g.drawString("PLAY", (int)playButton.getX() + 25, (int)playButton.getY() + 20);
     }
 
     public void mousePressed(MouseEvent e) {
         Point clicked = e.getPoint();
 
         if (e.getButton() == 1) {
-            if (settingsButton.contains(clicked) && pressedPlay) {
+            if (settingsButton.contains(clicked) && currentState == STATE.MENU) {
                 currentState = STATE.SETTINGS;
                 System.out.println("settings button pressed");
             }
-            else if (helpButton.contains(clicked) && pressedPlay) {
+            else if (helpButton.contains(clicked) && currentState == STATE.MENU) {
                 currentState = STATE.HELP;
                 System.out.println("help button pressed");
             }
             else if (closeButton.contains(clicked) && (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT)) {
                 currentState = STATE.MENU;
+                System.out.println("close button pressed");
             }
             else if (playButton.contains(clicked)) {
                 currentState = STATE.LEVELSELECT;
-                pressedPlay = true;
                 System.out.println("play button pressed");
             }
         }
