@@ -35,8 +35,7 @@ public class Level {
         catch (FileNotFoundException e) {
             System.out.println("Level not found");
         }
-        System.out.println(layout.get(0).size());
-        for (int r = 0; r < layout.get(0).size(); r++) {
+        for (int r = layout.size() - 1; r >= 0; r--) {
             for (int c = 0; c < 3; c++) {
                 System.out.print("[" + layout.get(r).get(c).getColor() + "]");
             }
