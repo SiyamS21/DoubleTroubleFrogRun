@@ -27,6 +27,8 @@ class DrawPanel extends JPanel implements MouseListener {
     private Rectangle helpButton;
     private Rectangle closeButton;
     private Rectangle tutorialButton;
+    private String firstSelectedFrog;
+    private String secondSelectedFrog;
     private enum STATE {
         MENU,
         LEVELSELECT,
@@ -41,7 +43,7 @@ class DrawPanel extends JPanel implements MouseListener {
     public DrawPanel() {
         this.addMouseListener(this);
         settingsButton = new Rectangle(440, 420, 32, 32);
-        playButton = new Rectangle(200, 200, 100, 45);
+        playButton = new Rectangle(200, 200, 80, 40);
         helpButton = new Rectangle(400, 420, 32, 32);
         closeButton = new Rectangle(10, 10, 32, 32);
         tutorialButton = new Rectangle(200, 200, 30, 30);
@@ -49,6 +51,8 @@ class DrawPanel extends JPanel implements MouseListener {
         selectYellowButton = new Rectangle(20, 295, 75, 75);
         selectBlueButton = new Rectangle(100, 100, 75, 75);
         selectRedButton = new Rectangle(100, 295, 75, 75);
+        firstSelectedFrog = "green";
+        secondSelectedFrog = "yellow";
         try {
             settingsImage = ImageIO.read(new File("images/gear.png"));
         } catch (IOException e) {
@@ -105,15 +109,11 @@ class DrawPanel extends JPanel implements MouseListener {
         super.paintComponent(g);
         g.setFont(new Font("Courier New", Font.BOLD, 20));
         if (currentState == STATE.MENU) {
-            g.drawRect((int)settingsButton.getX(), (int)settingsButton.getY(), (int)settingsButton.getWidth(), (int)settingsButton.getHeight());
             g.drawImage(settingsImage, (int)settingsButton.getX(), (int)settingsButton.getY(), null);
-            g.drawRect((int)helpButton.getX(), (int)helpButton.getY(), (int)helpButton.getWidth(), (int)helpButton.getHeight());
             g.drawImage(helpImage, (int)helpButton.getX(), (int)helpButton.getY(), null);
-            g.drawRect((int)playButton.getX(), (int)playButton.getY(), (int)playButton.getWidth(), (int)playButton.getHeight());
-            g.drawImage(playImage, (int)playButton.getX(), (int)playButton.getY(), null);
+            g.drawImage(playImage, (int)playButton.getX() - 9, (int)playButton.getY() - 3, null);
         }
         if (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.GAME) {
-            g.drawRect((int)closeButton.getX(), (int)closeButton.getY(), (int)closeButton.getWidth(), (int)closeButton.getHeight());
             g.drawImage(closeImage, (int)closeButton.getX(), (int)closeButton.getY(), null);
         }
         if (currentState == STATE.LEVELSELECT) {
@@ -129,6 +129,34 @@ class DrawPanel extends JPanel implements MouseListener {
             g.drawImage(blueFrogImage, (int)selectBlueButton.getX(), (int)selectBlueButton.getY(), null);
             g.drawRect((int)selectRedButton.getX(), (int)selectRedButton.getY(), (int)selectRedButton.getWidth(), (int)selectRedButton.getHeight());
             g.drawImage(redFrogImage, (int)selectRedButton.getX(), (int)selectRedButton.getY(), null);
+            g.setFont(new Font("Courier New", Font.BOLD, 15));
+            g.drawString("Left click to choose the color of your first frog." , 10, 60);
+            g.drawString("Right click to choose the color of your second frog.", 10, 80);
+            g.setFont(new Font("Courier New", Font.BOLD, 20));
+            if (firstSelectedFrog.equals("green")) {
+                g.drawString("first", (int)selectGreenButton.getX(), (int)selectGreenButton.getY());
+            }
+            else if (firstSelectedFrog.equals("yellow")) {
+                g.drawString("first", (int)selectYellowButton.getX(), (int)selectYellowButton.getY());
+            }
+            else if (firstSelectedFrog.equals("blue")) {
+                g.drawString("first", (int)selectBlueButton.getX(), (int)selectBlueButton.getY());
+            }
+            else if (firstSelectedFrog.equals("red")) {
+                g.drawString("first", (int)selectRedButton.getX(), (int)selectRedButton.getY());
+            }
+            if (secondSelectedFrog.equals("green")) {
+                g.drawString("second", (int)selectGreenButton.getX(), (int)selectGreenButton.getY());
+            }
+            else if (secondSelectedFrog.equals("yellow")) {
+                g.drawString("second", (int)selectYellowButton.getX(), (int)selectYellowButton.getY());
+            }
+            else if (secondSelectedFrog.equals("blue")) {
+                g.drawString("second", (int)selectBlueButton.getX(), (int)selectBlueButton.getY());
+            }
+            else if (secondSelectedFrog.equals("red")) {
+                g.drawString("second", (int)selectRedButton.getX(), (int)selectRedButton.getY());
+            }
         }
     }
 
