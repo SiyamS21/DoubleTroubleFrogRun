@@ -11,5 +11,7 @@ public class Tile {
         return lane;
     }
 
-    public String getColor() { return color; }
+    public String getColor() {
+        return color;
+    }
 }
