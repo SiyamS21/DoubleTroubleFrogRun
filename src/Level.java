@@ -26,6 +26,9 @@ public class Level {
                 middleTile = currentLine.substring(currentLine.indexOf("[") + 1, currentLine.indexOf("]"));
                 currentLine = currentLine.substring(currentLine.indexOf("]") + 1);
                 rightTile = currentLine.substring(currentLine.indexOf("[") + 1, currentLine.indexOf("]"));
+                if (leftTile.indexOf("F") != -1) {
+
+                }
                 layout.get(r).add(0, new Tile(0, leftTile.substring(0, 1)));
                 layout.get(r).add(1, new Tile(1, middleTile.substring(0, 1)));
                 layout.get(r).add(2, new Tile(2, rightTile.substring(0, 1)));

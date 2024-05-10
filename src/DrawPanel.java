@@ -1,5 +1,7 @@
 
 import java.awt.*;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import javax.imageio.ImageIO;
@@ -9,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 
-class DrawPanel extends JPanel implements MouseListener {
+class DrawPanel extends JPanel implements MouseListener, KeyListener {
     private Rectangle settingsButton;
     private BufferedImage settingsImage;
     private BufferedImage helpImage;
@@ -19,6 +21,7 @@ class DrawPanel extends JPanel implements MouseListener {
     private BufferedImage blueFrogImage;
     private BufferedImage redFrogImage;
     private BufferedImage playImage;
+    private BufferedImage background;
     private Rectangle selectGreenButton;
     private Rectangle selectYellowButton;
     private Rectangle selectBlueButton;
@@ -31,6 +34,8 @@ class DrawPanel extends JPanel implements MouseListener {
     private String secondFrogColor;
     private Frog firstFrog;
     private Frog secondFrog;
+    private char firstFrogKey;
+    private char secondFrogKey;
     private enum STATE {
         MENU,
         LEVELSELECT,
@@ -55,8 +60,8 @@ class DrawPanel extends JPanel implements MouseListener {
         selectRedButton = new Rectangle(100, 295, 75, 75);
         firstFrogColor = "green";
         secondFrogColor = "yellow";
-        firstFrog = new Frog(true, firstFrogColor);
-        secondFrog = new Frog(false, secondFrogColor);
+        firstFrogKey = 'z';
+        secondFrogKey = 'x';
         try {
             settingsImage = ImageIO.read(new File("images/gear.png"));
         } catch (IOException e) {
@@ -105,12 +110,28 @@ class DrawPanel extends JPanel implements MouseListener {
             System.out.println(e);
             playImage = null;
         }
+        try {
+            background = ImageIO.read(new File("images/background.jpg"));
+        } catch (IOException e) {
+            System.out.println(e);
+            background = null;
+        }
     }
 
 
 
+    public void initializeFrog(boolean f, int x, int y) {
+        if (f) {
+            firstFrog = new Frog(true, firstFrogColor, x, y);
+        }
+        else {
+            secondFrog = new Frog(false, secondFrogColor, x, y);
+        }
+    }
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawImage(background, 0, 0, null);
         g.setFont(new Font("Courier New", Font.BOLD, 20));
         if (currentState == STATE.MENU) {
             g.drawImage(settingsImage, (int)settingsButton.getX(), (int)settingsButton.getY(), null);
@@ -227,4 +248,23 @@ class DrawPanel extends JPanel implements MouseListener {
     public void mouseEntered(MouseEvent e) { }
     public void mouseExited(MouseEvent e) { }
     public void mouseClicked(MouseEvent e) { }
+
+    public void keyPressed(KeyEvent e) {
+    }
+
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    public void keyTyped(KeyEvent e) {
+        char key = e.getKeyChar();
+        if (currentState == STATE.GAME) {
+            if (key == firstFrogKey) {
+                //firstFrog.move();
+            }
+            if (key == secondFrogKey) {
+                //secondFrog.move();
+            }
+        }
+    }
 }
