@@ -122,10 +122,34 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
 
     public void initializeFrog(boolean f, int x, int y) {
         if (f) {
-            firstFrog = new Frog(true, firstFrogColor, x, y);
+            firstFrog = new Frog(true, firstFrogColor, x, y, null);
         }
         else {
-            secondFrog = new Frog(false, secondFrogColor, x, y);
+            secondFrog = new Frog(false, secondFrogColor, x, y, null);
+        }
+        if (firstFrogColor.equals("green")) {
+            firstFrog.setImage(greenFrogImage);
+        }
+        else if (firstFrogColor.equals("yellow")) {
+            firstFrog.setImage(yellowFrogImage);
+        }
+        else if (firstFrogColor.equals("blue")) {
+            firstFrog.setImage(blueFrogImage);
+        }
+        else if (firstFrogColor.equals("red")) {
+            firstFrog.setImage(redFrogImage);
+        }
+        if (secondFrogColor.equals("green")) {
+            secondFrog.setImage(greenFrogImage);
+        }
+        else if (secondFrogColor.equals("yellow")) {
+            secondFrog.setImage(yellowFrogImage);
+        }
+        else if (secondFrogColor.equals("blue")) {
+            secondFrog.setImage(blueFrogImage);
+        }
+        else if (secondFrogColor.equals("red")) {
+            secondFrog.setImage(redFrogImage);
         }
     }
 
@@ -183,6 +207,12 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 g.drawString("second", (int)selectRedButton.getX(), (int)selectRedButton.getY());
             }
         }
+        if (currentState == STATE.GAME) {
+            initializeFrog(true, 100, 400);
+            initializeFrog(false, 200, 400);
+            g.drawImage(firstFrog.getImage(), 100, 400, null);
+            g.drawImage(secondFrog.getImage(), 200, 400, null);
+        }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -221,9 +251,6 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             else if (selectRedButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("red")) {
                 firstFrogColor = "red";
             }
-            else if (selectGreenButton.contains(clicked) || selectGreenButton.contains(clicked) || selectGreenButton.contains(clicked) || selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS) {
-                firstFrog.setColor(firstFrogColor);
-            }
         }
         else if (e.getButton() == 3) {
             if (selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("green")) {
@@ -237,9 +264,6 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             }
             else if (selectRedButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("red")) {
                 secondFrogColor = "red";
-            }
-            else if (selectGreenButton.contains(clicked) || selectGreenButton.contains(clicked) || selectGreenButton.contains(clicked) || selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS) {
-                secondFrog.setColor(secondFrogColor);
             }
         }
     }
