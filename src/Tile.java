@@ -1,10 +1,14 @@
 public class Tile {
     private int lane;
-    private String color;
+    private String info;
 
-    public Tile(int l, String c) {
+    public Tile(int l, String i) {
         lane = l;
-        color = c;
+        info = i;
+    }
+
+    public String getInfo() {
+        return info;
     }
 
     public int getLane() {
@@ -12,6 +16,36 @@ public class Tile {
     }
 
     public String getColor() {
-        return color;
+        return info.substring(0, 1);
+    }
+
+    public boolean isEnd() {
+        if (info.length() == 1) {
+            return false;
+        }
+        else if (info.substring(1, 2).equals("E")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasFirstFrog() {
+        if (info.length() == 1) {
+            return false;
+        }
+        else if (info.substring(1, 2).equals("F")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean hasSecondFrog() {
+        if (info.length() == 1) {
+            return false;
+        }
+        else if (info.substring(1, 2).equals("S")) {
+            return true;
+        }
+        return false;
     }
 }

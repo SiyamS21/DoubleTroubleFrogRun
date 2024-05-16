@@ -9,16 +9,21 @@ public class Frog {
     private int currentY;
     private BufferedImage image;
 
-    public Frog(boolean f, String c, int x, int y, BufferedImage i) {
+    public Frog(boolean f, String c, BufferedImage i) {
         first = f;
         color = c;
-        currentX = x;
-        currentY = y;
         image = i;
+        if (f) {
+            currentX = 100;
+        }
+        else {
+            currentX = 200;
+        }
+        currentY = 400;
     }
 
     public void move() {
-
+        currentY += 50;
     }
 
     public boolean isFirst() {
@@ -39,5 +44,13 @@ public class Frog {
 
     public void setImage(BufferedImage i) {
         image = i;
+    }
+
+    public int getCurrentX() {
+        return currentX;
+    }
+
+    public int getCurrentY() {
+        return currentY;
     }
 }

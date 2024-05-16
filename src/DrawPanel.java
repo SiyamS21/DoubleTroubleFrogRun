@@ -36,6 +36,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     private Frog secondFrog;
     private char firstFrogKey;
     private char secondFrogKey;
+    private Level currentLevel;
     private enum STATE {
         MENU,
         LEVELSELECT,
@@ -49,6 +50,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
 
     public DrawPanel() {
         this.addMouseListener(this);
+        this.addKeyListener(this);
         settingsButton = new Rectangle(440, 420, 32, 32);
         playButton = new Rectangle(200, 200, 80, 40);
         helpButton = new Rectangle(400, 420, 32, 32);
@@ -62,6 +64,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         secondFrogColor = "yellow";
         firstFrogKey = 'z';
         secondFrogKey = 'x';
+        currentLevel = null;
         try {
             settingsImage = ImageIO.read(new File("images/gear.png"));
         } catch (IOException e) {
@@ -116,40 +119,17 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             System.out.println(e);
             background = null;
         }
-    }
-
-
-
-    public void initializeFrog(boolean f, int x, int y) {
-        if (f) {
-            firstFrog = new Frog(true, firstFrogColor, x, y, null);
+        try {
+            firstFrog = new Frog(true, firstFrogColor, ImageIO.read(new File("frogs/frog_" + firstFrogColor + ".png")));
+        } catch (IOException e) {
+            System.out.println(e);
+            firstFrog = null;
         }
-        else {
-            secondFrog = new Frog(false, secondFrogColor, x, y, null);
-        }
-        if (firstFrogColor.equals("green")) {
-            firstFrog.setImage(greenFrogImage);
-        }
-        else if (firstFrogColor.equals("yellow")) {
-            firstFrog.setImage(yellowFrogImage);
-        }
-        else if (firstFrogColor.equals("blue")) {
-            firstFrog.setImage(blueFrogImage);
-        }
-        else if (firstFrogColor.equals("red")) {
-            firstFrog.setImage(redFrogImage);
-        }
-        if (secondFrogColor.equals("green")) {
-            secondFrog.setImage(greenFrogImage);
-        }
-        else if (secondFrogColor.equals("yellow")) {
-            secondFrog.setImage(yellowFrogImage);
-        }
-        else if (secondFrogColor.equals("blue")) {
-            secondFrog.setImage(blueFrogImage);
-        }
-        else if (secondFrogColor.equals("red")) {
-            secondFrog.setImage(redFrogImage);
+        try {
+            secondFrog = new Frog(false, secondFrogColor, ImageIO.read(new File("frogs/frog_" + secondFrogColor + ".png")));
+        } catch (IOException e) {
+            System.out.println(e);
+            secondFrog = null;
         }
     }
 
@@ -208,10 +188,8 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             }
         }
         if (currentState == STATE.GAME) {
-            initializeFrog(true, 100, 400);
-            initializeFrog(false, 200, 400);
-            g.drawImage(firstFrog.getImage(), 100, 400, null);
-            g.drawImage(secondFrog.getImage(), 200, 400, null);
+            g.drawImage(firstFrog.getImage(), firstFrog.getCurrentX(), firstFrog.getCurrentY(), null);
+            g.drawImage(secondFrog.getImage(), secondFrog.getCurrentX(), secondFrog.getCurrentY(), null);
         }
     }
 
@@ -238,32 +216,49 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             else if (tutorialButton.contains(clicked) && currentState == STATE.LEVELSELECT) {
                 currentState = STATE.GAME;
                 System.out.println("tutorial button pressed");
+                currentLevel = new Level("tutorial");
             }
             else if (selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("green")) {
                 firstFrogColor = "green";
+                firstFrog.setColor("green");
+                firstFrog.setImage(greenFrogImage);
             }
             else if (selectYellowButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("yellow")) {
                 firstFrogColor = "yellow";
+                firstFrog.setColor("yellow");
+                firstFrog.setImage(yellowFrogImage);
             }
             else if (selectBlueButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("blue")) {
                 firstFrogColor = "blue";
+                firstFrog.setColor("blue");
+                firstFrog.setImage(blueFrogImage);
             }
             else if (selectRedButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("red")) {
                 firstFrogColor = "red";
+                firstFrog.setColor("red");
+                firstFrog.setImage(redFrogImage);
             }
         }
         else if (e.getButton() == 3) {
             if (selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("green")) {
                 secondFrogColor = "green";
+                secondFrog.setColor("green");
+                secondFrog.setImage(greenFrogImage);
             }
             else if (selectYellowButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("yellow")) {
                 secondFrogColor = "yellow";
+                secondFrog.setColor("yellow");
+                secondFrog.setImage(yellowFrogImage);
             }
             else if (selectBlueButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("blue")) {
                 secondFrogColor = "blue";
+                secondFrog.setColor("blue");
+                secondFrog.setImage(blueFrogImage);
             }
             else if (selectRedButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("red")) {
                 secondFrogColor = "red";
+                secondFrog.setColor("red");
+                secondFrog.setImage(redFrogImage);
             }
         }
     }
@@ -284,10 +279,12 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         char key = e.getKeyChar();
         if (currentState == STATE.GAME) {
             if (key == firstFrogKey) {
-                //firstFrog.move();
+                firstFrog.move();
+                System.out.println("moved f");
             }
             if (key == secondFrogKey) {
-                //secondFrog.move();
+                secondFrog.move();
+                System.out.println("moved s");
             }
         }
     }
