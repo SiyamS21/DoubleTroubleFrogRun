@@ -23,7 +23,11 @@ public class Frog {
     }
 
     public void move() {
-        currentY += 50;
+        currentY -= 50;
+    }
+
+    public void reset() {
+        currentY = 400;
     }
 
     public boolean isFirst() {

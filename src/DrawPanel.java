@@ -51,6 +51,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     public DrawPanel() {
         this.addMouseListener(this);
         this.addKeyListener(this);
+        this.setFocusable(true);
         settingsButton = new Rectangle(440, 420, 32, 32);
         playButton = new Rectangle(200, 200, 80, 40);
         helpButton = new Rectangle(400, 420, 32, 32);
@@ -161,6 +162,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             g.setFont(new Font("Courier New", Font.BOLD, 15));
             g.drawString("Left click to choose the color of your first frog." , 10, 60);
             g.drawString("Right click to choose the color of your second frog.", 10, 80);
+            g.drawString("Click to choose the key", 225, 150);
+            g.drawString("for your first frog:", 225, 165);
+            g.drawString("Click to choose the key", 225, 300);
+            g.drawString("for your second frog:", 225, 315);
             g.setFont(new Font("Courier New", Font.BOLD, 20));
             if (firstFrogColor.equals("green")) {
                 g.drawString("first", (int)selectGreenButton.getX(), (int)selectGreenButton.getY());
@@ -206,6 +211,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 System.out.println("help button pressed");
             }
             else if (closeButton.contains(clicked) && (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.GAME)) {
+                if (currentState == STATE.GAME) {
+                    firstFrog.reset();
+                    secondFrog.reset();
+                }
                 currentState = STATE.MENU;
                 System.out.println("close button pressed");
             }
@@ -272,11 +281,11 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     }
 
     public void keyReleased(KeyEvent e) {
-
     }
 
     public void keyTyped(KeyEvent e) {
         char key = e.getKeyChar();
+
         if (currentState == STATE.GAME) {
             if (key == firstFrogKey) {
                 firstFrog.move();
