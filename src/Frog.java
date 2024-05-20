@@ -14,10 +14,10 @@ public class Frog {
         color = c;
         image = i;
         if (f) {
-            currentX = 100;
+            currentX = 130;
         }
         else {
-            currentX = 200;
+            currentX = 270;
         }
         currentY = 400;
     }
