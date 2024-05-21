@@ -20,6 +20,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     private BufferedImage yellowFrogImage;
     private BufferedImage blueFrogImage;
     private BufferedImage redFrogImage;
+    private BufferedImage greenTileImage;
+    private BufferedImage yellowTileImage;
+    private BufferedImage blueTileImage;
+    private BufferedImage redTileImage;
     private BufferedImage playImage;
     private BufferedImage background;
     private BufferedImage background2;
@@ -35,6 +39,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     private Rectangle selectSecondButton;
     private String firstFrogColor;
     private String secondFrogColor;
+    private String firstTileColor;
+    private String secondTileColor;
+    private BufferedImage firstTileImage;
+    private BufferedImage secondTileImage;
     private Frog firstFrog;
     private Frog secondFrog;
     private char firstFrogKey;
@@ -70,6 +78,8 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         selectSecondButton = new Rectangle(245, 330, 30, 30);
         firstFrogColor = "green";
         secondFrogColor = "yellow";
+        firstTileColor = "green";
+        secondTileColor = "yellow";
         firstFrogKey = 'z';
         secondFrogKey = 'x';
         currentLevel = null;
@@ -116,6 +126,30 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             redFrogImage = null;
         }
         try {
+            greenTileImage = ImageIO.read(new File("tiles/tile_green.png"));
+        } catch (IOException e) {
+            System.out.println(e);
+            greenTileImage = null;
+        }
+        try {
+            yellowTileImage = ImageIO.read(new File("tiles/tile_yellow.png"));
+        } catch (IOException e) {
+            System.out.println(e);
+            yellowTileImage = null;
+        }
+        try {
+            blueTileImage = ImageIO.read(new File("tiles/tile_blue.png"));
+        } catch (IOException e) {
+            System.out.println(e);
+            blueTileImage = null;
+        }
+        try {
+            redTileImage = ImageIO.read(new File("tiles/tile_red.png"));
+        } catch (IOException e) {
+            System.out.println(e);
+            redTileImage = null;
+        }
+        try {
             playImage = ImageIO.read(new File("images/play.png"));
         } catch (IOException e) {
             System.out.println(e);
@@ -145,6 +179,8 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             System.out.println(e);
             secondFrog = null;
         }
+        firstTileImage = greenTileImage;
+        secondTileImage = yellowTileImage;
     }
 
     protected void paintComponent(Graphics g) {
@@ -214,6 +250,37 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             g.drawImage(firstFrog.getImage(), firstFrog.getCurrentX(), firstFrog.getCurrentY(), null);
             g.drawImage(secondFrog.getImage(), secondFrog.getCurrentX(), secondFrog.getCurrentY(), null);
             g.drawImage(closeImage, (int)closeButton.getX(), (int)closeButton.getY(), null);
+            ArrayList<ArrayList<Tile>> currentLevelLayout = currentLevel.getLayout();
+            int currentYLevel = 400;
+            for (int r = currentLevelLayout.size() - 1; r >= 0; r--) {
+                for (int c = 0; c < 3; c++) {
+                    if (c == 0) {
+                        if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
+                            g.drawImage(firstTileImage, 150, currentYLevel, null);
+                        }
+                        else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
+                            g.drawImage(secondTileImage, 150, currentYLevel, null);
+                        }
+                    }
+                    else if (c == 1) {
+                        if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
+                            g.drawImage(firstTileImage, 230, currentYLevel, null);
+                        }
+                        else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
+                            g.drawImage(secondTileImage, 230, currentYLevel, null);
+                        }
+                    }
+                    else {
+                        if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
+                            g.drawImage(firstTileImage, 310, currentYLevel, null);
+                        }
+                        else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
+                            g.drawImage(secondTileImage, 310, currentYLevel, null);
+                        }
+                    }
+                }
+                currentYLevel -= 70;
+            }
         }
         if (currentState == STATE.FIRSTLETTERSELECT || currentState == STATE.SECONDLETTERSELECT) {
             g.drawString("Press the key you would like to select", 13, 220);
@@ -251,21 +318,29 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             }
             else if (selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("green")) {
                 firstFrogColor = "green";
+                firstTileColor = "green";
+                firstTileImage = greenTileImage;
                 firstFrog.setColor("green");
                 firstFrog.setImage(greenFrogImage);
             }
             else if (selectYellowButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("yellow")) {
                 firstFrogColor = "yellow";
+                firstTileColor = "yellow";
+                firstTileImage = yellowTileImage;
                 firstFrog.setColor("yellow");
                 firstFrog.setImage(yellowFrogImage);
             }
             else if (selectBlueButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("blue")) {
                 firstFrogColor = "blue";
+                firstTileColor = "blue";
+                firstTileImage = blueTileImage;
                 firstFrog.setColor("blue");
                 firstFrog.setImage(blueFrogImage);
             }
             else if (selectRedButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("red")) {
                 firstFrogColor = "red";
+                firstTileColor = "red";
+                firstTileImage = redTileImage;
                 firstFrog.setColor("red");
                 firstFrog.setImage(redFrogImage);
             }
@@ -279,21 +354,29 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         else if (e.getButton() == 3) {
             if (selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("green")) {
                 secondFrogColor = "green";
+                secondTileColor = "green";
+                secondTileImage = greenTileImage;
                 secondFrog.setColor("green");
                 secondFrog.setImage(greenFrogImage);
             }
             else if (selectYellowButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("yellow")) {
                 secondFrogColor = "yellow";
+                secondTileColor = "yellow";
+                secondTileImage = yellowTileImage;
                 secondFrog.setColor("yellow");
                 secondFrog.setImage(yellowFrogImage);
             }
             else if (selectBlueButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("blue")) {
                 secondFrogColor = "blue";
+                secondTileColor = "blue";
+                secondTileImage = blueTileImage;
                 secondFrog.setColor("blue");
                 secondFrog.setImage(blueFrogImage);
             }
             else if (selectRedButton.contains(clicked) && currentState == STATE.SETTINGS && !firstFrogColor.equals("red")) {
                 secondFrogColor = "red";
+                secondTileColor = "red";
+                secondTileImage = redTileImage;
                 secondFrog.setColor("red");
                 secondFrog.setImage(redFrogImage);
             }

@@ -91,4 +91,8 @@ public class Level {
             return 2;
         }
     }
+
+    public ArrayList<ArrayList<Tile>> getLayout() {
+        return layout;
+    }
 }
