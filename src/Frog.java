@@ -22,8 +22,14 @@ public class Frog {
         currentY = 400;
     }
 
-    public void move() {
-        currentY -= 50;
+    public void move(int move) {
+        currentY++;
+        if (move == 0) {
+            currentX--;
+        }
+        else if (move == 2) {
+            currentX++;
+        }
     }
 
     public void reset() {
@@ -56,5 +62,18 @@ public class Frog {
 
     public int getCurrentY() {
         return currentY;
+    }
+
+    public void setCurrentX(int x) {
+        currentX = x;
+    }
+
+    public void setCurrentY(int y) {
+        currentY = y;
+    }
+
+    public void setCurrentCoords(int x, int y) {
+        currentX = x;
+        currentY = y;
     }
 }

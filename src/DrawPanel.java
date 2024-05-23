@@ -247,8 +247,6 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         }
         if (currentState == STATE.GAME) {
             g.drawImage(background2, 0, 0, null);
-            g.drawImage(firstFrog.getImage(), firstFrog.getCurrentX(), firstFrog.getCurrentY(), null);
-            g.drawImage(secondFrog.getImage(), secondFrog.getCurrentX(), secondFrog.getCurrentY(), null);
             g.drawImage(closeImage, (int)closeButton.getX(), (int)closeButton.getY(), null);
             ArrayList<ArrayList<Tile>> currentLevelLayout = currentLevel.getLayout();
             int currentYLevel = 400;
@@ -257,25 +255,49 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     if (c == 0) {
                         if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                             g.drawImage(firstTileImage, 150, currentYLevel, null);
+                            if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
+                                g.drawImage(firstFrog.getImage(), 150, currentYLevel, null);
+                                firstFrog.setCurrentCoords(r, 0);
+                            }
                         }
                         else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                             g.drawImage(secondTileImage, 150, currentYLevel, null);
+                            if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
+                                g.drawImage(secondFrog.getImage(), 150, currentYLevel, null);
+                                secondFrog.setCurrentCoords(r, 0);
+                            }
                         }
                     }
                     else if (c == 1) {
                         if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                             g.drawImage(firstTileImage, 230, currentYLevel, null);
+                            if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
+                                g.drawImage(firstFrog.getImage(), 217, currentYLevel - 16, null);
+                                firstFrog.setCurrentCoords(r, 1);
+                            }
                         }
                         else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                             g.drawImage(secondTileImage, 230, currentYLevel, null);
+                            if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
+                                g.drawImage(secondFrog.getImage(), 217, currentYLevel - 16, null);
+                                secondFrog.setCurrentCoords(r, 1);
+                            }
                         }
                     }
                     else {
                         if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                             g.drawImage(firstTileImage, 310, currentYLevel, null);
+                            if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
+                                g.drawImage(firstFrog.getImage(), 310, currentYLevel, null);
+                                firstFrog.setCurrentCoords(r, 2);
+                            }
                         }
                         else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                             g.drawImage(secondTileImage, 310, currentYLevel, null);
+                            if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
+                                g.drawImage(secondFrog.getImage(), 310, currentYLevel, null);
+                                secondFrog.setCurrentCoords(r, 2);
+                            }
                         }
                     }
                 }
@@ -396,11 +418,11 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
 
         if (currentState == STATE.GAME) {
             if (key == firstFrogKey) {
-                firstFrog.move();
+                firstFrog.move(currentLevel.findNextMove(true, firstFrog.getCurrentX(), firstFrog.getCurrentY()));
                 System.out.println("moved f");
             }
             if (key == secondFrogKey) {
-                secondFrog.move();
+                secondFrog.move(currentLevel.findNextMove(false, secondFrog.getCurrentX(), secondFrog.getCurrentY()));
                 System.out.println("moved s");
             }
         }
