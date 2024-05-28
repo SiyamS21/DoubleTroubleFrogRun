@@ -60,25 +60,31 @@ public class Level {
         }
 
         if (first) {
-            if (zero && layout.get(currentX + 1).get(currentY - 1).getColor().equals("x") || layout.get(currentX + 1).get(currentY - 1).getColor().equals("s")) {
+            System.out.println("first");
+            if (zero && layout.get(currentY - 1).get(currentX - 1).getColor().equals("x") || layout.get(currentY - 1).get(currentX - 1).getColor().equals("s")) {
+                System.out.println("zero");
                 zero = false;
             }
-            if (layout.get(currentX + 1).get(currentY).getColor().equals("x") || layout.get(currentX + 1).get(currentY).getColor().equals("s")) {
+            if (layout.get(currentY - 1).get(currentX).getColor().equals("x") || layout.get(currentY - 1).get(currentX).getColor().equals("s")) {
                 one = false;
             }
-            if (two && layout.get(currentX + 1).get(currentY + 1).getColor().equals("x") || layout.get(currentX + 1).get(currentY).getColor().equals("s")) {
-                one = false;
+            if (two && layout.get(currentY - 1).get(currentX + 1).getColor().equals("x") || layout.get(currentY - 1).get(currentX).getColor().equals("s")) {
+                two = false;
             }
         }
         else {
-            if (zero && layout.get(currentX + 1).get(currentY - 1).getColor().equals("x") || layout.get(currentX + 1).get(currentY - 1).getColor().equals("f")) {
+            System.out.println("second");
+            if (zero && layout.get(currentY + 1).get(currentX - 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX - 1).getColor().equals("f")) {
+                System.out.println("zero");
                 zero = false;
             }
-            if (layout.get(currentX + 1).get(currentY).getColor().equals("x") || layout.get(currentX + 1).get(currentY).getColor().equals("f")) {
+            if (layout.get(currentY + 1).get(currentX).getColor().equals("x") || layout.get(currentY + 1).get(currentX).getColor().equals("f")) {
+                System.out.println("one");
                 one = false;
             }
-            if (two && layout.get(currentX + 1).get(currentY + 1).getColor().equals("x") || layout.get(currentX + 1).get(currentY).getColor().equals("f")) {
-                one = false;
+            if (two && layout.get(currentY + 1).get(currentX + 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX).getColor().equals("f")) {
+                System.out.println("two");
+                two = false;
             }
         }
         if (zero) {
@@ -94,5 +100,11 @@ public class Level {
 
     public ArrayList<ArrayList<Tile>> getLayout() {
         return layout;
+    }
+
+    public void moveFrog(boolean first) {
+        if (first) {
+
+        }
     }
 }

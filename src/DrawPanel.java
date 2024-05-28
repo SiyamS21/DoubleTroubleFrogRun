@@ -55,7 +55,8 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         SETTINGS,
         HELP,
         FIRSTLETTERSELECT,
-        SECONDLETTERSELECT
+        SECONDLETTERSELECT,
+        END
     }
     private STATE currentState = STATE.MENU;
 
@@ -257,14 +258,15 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                             g.drawImage(firstTileImage, 150, currentYLevel, null);
                             if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
                                 g.drawImage(firstFrog.getImage(), 150, currentYLevel, null);
-                                firstFrog.setCurrentCoords(r, 0);
+                                firstFrog.setCurrentCoords(0, r);
+                                System.out.println(r);
                             }
                         }
                         else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                             g.drawImage(secondTileImage, 150, currentYLevel, null);
                             if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
                                 g.drawImage(secondFrog.getImage(), 150, currentYLevel, null);
-                                secondFrog.setCurrentCoords(r, 0);
+                                secondFrog.setCurrentCoords(0, r);
                             }
                         }
                     }
@@ -273,14 +275,14 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                             g.drawImage(firstTileImage, 230, currentYLevel, null);
                             if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
                                 g.drawImage(firstFrog.getImage(), 217, currentYLevel - 16, null);
-                                firstFrog.setCurrentCoords(r, 1);
+                                firstFrog.setCurrentCoords(1, r);
                             }
                         }
                         else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                             g.drawImage(secondTileImage, 230, currentYLevel, null);
                             if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
                                 g.drawImage(secondFrog.getImage(), 217, currentYLevel - 16, null);
-                                secondFrog.setCurrentCoords(r, 1);
+                                secondFrog.setCurrentCoords(1, r);
                             }
                         }
                     }
@@ -289,14 +291,14 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                             g.drawImage(firstTileImage, 310, currentYLevel, null);
                             if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
                                 g.drawImage(firstFrog.getImage(), 310, currentYLevel, null);
-                                firstFrog.setCurrentCoords(r, 2);
+                                firstFrog.setCurrentCoords(2, r);
                             }
                         }
                         else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                             g.drawImage(secondTileImage, 310, currentYLevel, null);
                             if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
                                 g.drawImage(secondFrog.getImage(), 310, currentYLevel, null);
-                                secondFrog.setCurrentCoords(r, 2);
+                                secondFrog.setCurrentCoords(2, r);
                             }
                         }
                     }
@@ -306,6 +308,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         }
         if (currentState == STATE.FIRSTLETTERSELECT || currentState == STATE.SECONDLETTERSELECT) {
             g.drawString("Press the key you would like to select", 13, 220);
+        }
+        if (currentState == STATE.END) {
+            g.drawString("Congratulations! You won the level!", 100, 200);
+
         }
     }
 
@@ -419,11 +425,11 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         if (currentState == STATE.GAME) {
             if (key == firstFrogKey) {
                 firstFrog.move(currentLevel.findNextMove(true, firstFrog.getCurrentX(), firstFrog.getCurrentY()));
-                System.out.println("moved f");
+                System.out.println("moved f to (" + firstFrog.getCurrentX() + ", " + firstFrog.getCurrentY() + ")");
             }
             if (key == secondFrogKey) {
                 secondFrog.move(currentLevel.findNextMove(false, secondFrog.getCurrentX(), secondFrog.getCurrentY()));
-                System.out.println("moved s");
+                System.out.println("moved s to (" + secondFrog.getCurrentX() + ", " + secondFrog.getCurrentY() + ")");
             }
         }
         else if (currentState == STATE.FIRSTLETTERSELECT) {

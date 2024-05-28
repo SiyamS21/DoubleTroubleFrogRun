@@ -13,13 +13,8 @@ public class Frog {
         first = f;
         color = c;
         image = i;
-        if (f) {
-            currentX = 130;
-        }
-        else {
-            currentX = 270;
-        }
-        currentY = 400;
+        currentX = 0;
+        currentY = 0;
     }
 
     public void move(int move) {
