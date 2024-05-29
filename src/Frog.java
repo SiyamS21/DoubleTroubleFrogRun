@@ -28,7 +28,7 @@ public class Frog {
     }
 
     public void reset() {
-        currentY = 400;
+        currentY = 0;
     }
 
     public boolean isFirst() {
