@@ -48,4 +48,28 @@ public class Tile {
         }
         return false;
     }
+
+    public void removeFirstFrog() {
+        if (hasFirstFrog()) {
+            info = getColor();
+        }
+    }
+
+    public void removeSecondFrog() {
+        if (hasSecondFrog()) {
+            info = getColor();
+        }
+    }
+
+    public void addFirstFrog() {
+        if (!hasFirstFrog() && !isEnd()) {
+            info = info + "F";
+        }
+    }
+
+    public void addSecondFrog() {
+        if (!hasSecondFrog() && !isEnd()) {
+            info = info + "S";
+        }
+    }
 }

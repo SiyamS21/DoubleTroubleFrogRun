@@ -61,20 +61,22 @@ public class Level {
 
         if (first) {
             System.out.println("first");
-            if (zero && layout.get(currentY - 1).get(currentX - 1).getColor().equals("x") || layout.get(currentY - 1).get(currentX - 1).getColor().equals("s")) {
+            System.out.println(currentX + ", " + currentY);
+            if (zero && (layout.get(currentY + 1).get(currentX - 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX - 1).getColor().equals("s"))) {
                 System.out.println("zero");
                 zero = false;
             }
-            if (layout.get(currentY - 1).get(currentX).getColor().equals("x") || layout.get(currentY - 1).get(currentX).getColor().equals("s")) {
+            if (layout.get(currentY + 1).get(currentX).getColor().equals("x") || layout.get(currentY + 1).get(currentX).getColor().equals("s")) {
                 one = false;
             }
-            if (two && layout.get(currentY - 1).get(currentX + 1).getColor().equals("x") || layout.get(currentY - 1).get(currentX).getColor().equals("s")) {
+            if (two && (layout.get(currentY + 1).get(currentX + 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX).getColor().equals("s"))) {
                 two = false;
             }
         }
         else {
             System.out.println("second");
-            if (zero && layout.get(currentY + 1).get(currentX - 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX - 1).getColor().equals("f")) {
+            System.out.println(currentX + ", " + currentY);
+            if (zero && (layout.get(currentY + 1).get(currentX - 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX - 1).getColor().equals("f"))) {
                 System.out.println("zero");
                 zero = false;
             }
@@ -82,20 +84,45 @@ public class Level {
                 System.out.println("one");
                 one = false;
             }
-            if (two && layout.get(currentY + 1).get(currentX + 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX).getColor().equals("f")) {
+            if (two && (layout.get(currentY + 1).get(currentX + 1).getColor().equals("x") || layout.get(currentY + 1).get(currentX).getColor().equals("f"))) {
                 System.out.println("two");
                 two = false;
             }
         }
         if (zero) {
+            if (first) {
+                layout.get(currentY).get(currentX).removeFirstFrog();
+                layout.get(currentY + 1).get(currentX - 1).addFirstFrog();
+            }
+            else {
+                layout.get(currentY).get(currentX).removeSecondFrog();
+                layout.get(currentY + 1).get(currentX - 1).addSecondFrog();
+            }
             return 0;
         }
         else if (one) {
+            if (first) {
+                layout.get(currentY).get(currentX).removeFirstFrog();
+                layout.get(currentY + 1).get(currentX).addFirstFrog();
+            }
+            else {
+                layout.get(currentY).get(currentX).removeSecondFrog();
+                layout.get(currentY + 1).get(currentX).addSecondFrog();
+            }
             return 1;
         }
-        else {
+        else if (two){
+            if (first) {
+                layout.get(currentY).get(currentX).removeFirstFrog();
+                layout.get(currentY + 1).get(currentX + 1).addFirstFrog();
+            }
+            else {
+                layout.get(currentY).get(currentX).removeSecondFrog();
+                layout.get(currentY + 1).get(currentX + 1).addSecondFrog();
+            }
             return 2;
         }
+        return 10;
     }
 
     public ArrayList<ArrayList<Tile>> getLayout() {

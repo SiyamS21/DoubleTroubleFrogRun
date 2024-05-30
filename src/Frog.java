@@ -8,6 +8,7 @@ public class Frog {
     private int currentX;
     private int currentY;
     private BufferedImage image;
+    private boolean initialized;
 
     public Frog(boolean f, String c, BufferedImage i) {
         first = f;
@@ -15,6 +16,7 @@ public class Frog {
         image = i;
         currentX = 0;
         currentY = 0;
+        initialized = false;
     }
 
     public void move(int move) {
@@ -70,5 +72,13 @@ public class Frog {
     public void setCurrentCoords(int x, int y) {
         currentX = x;
         currentY = y;
+    }
+
+    public boolean beenInitialized() {
+        return initialized;
+    }
+
+    public void flipInitialized() {
+        initialized = !initialized;
     }
 }

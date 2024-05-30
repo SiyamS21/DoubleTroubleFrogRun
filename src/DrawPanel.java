@@ -193,7 +193,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             g.drawImage(helpImage, (int)helpButton.getX(), (int)helpButton.getY(), null);
             g.drawImage(playImage, (int)playButton.getX() - 9, (int)playButton.getY() - 3, null);
         }
-        if (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT) {
+        if (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.END) {
             g.drawImage(closeImage, (int)closeButton.getX(), (int)closeButton.getY(), null);
         }
         if (currentState == STATE.LEVELSELECT) {
@@ -257,21 +257,26 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                         g.drawImage(firstTileImage, 150 + (c * 80), currentYLevel, null);
                         if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
-                            g.drawImage(firstFrog.getImage(), (150 + (c * 80) - 13), currentYLevel - 18, null);
-                            firstFrog.setCurrentCoords(c, frogR);
+                            g.drawImage(firstFrog.getImage(), (150 + (firstFrog.getCurrentX() * 80) - 13), 400 - (firstFrog.getCurrentY() * 70) - 18, null);
+                            if (!firstFrog.beenInitialized()) {
+                                firstFrog.setCurrentCoords(c, frogR);
+                                firstFrog.flipInitialized();
+                            }
                         }
                     }
                     else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                         g.drawImage(secondTileImage, 150 + (c * 80), currentYLevel, null);
                         if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
-                            g.drawImage(secondFrog.getImage(), (150 + (c * 80) - 13), currentYLevel - 18, null);
-                            secondFrog.setCurrentCoords(c, frogR);
+                            g.drawImage(secondFrog.getImage(), (150 + (secondFrog.getCurrentX() * 80) - 13), 400 - (secondFrog.getCurrentY() * 70) - 18, null);
+                            if (!secondFrog.beenInitialized()) {
+                                secondFrog.setCurrentCoords(c, frogR);
+                                secondFrog.flipInitialized();
+                            }
                         }
                     }
-
+                    frogR++;
                 }
                 currentYLevel -= 70;
-                frogR++;
             }
         }
         if (currentState == STATE.FIRSTLETTERSELECT || currentState == STATE.SECONDLETTERSELECT) {
@@ -295,10 +300,12 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 currentState = STATE.HELP;
                 System.out.println("help button pressed");
             }
-            else if (closeButton.contains(clicked) && (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.GAME)) {
+            else if (closeButton.contains(clicked) && (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.GAME || currentState == STATE.END)) {
                 if (currentState == STATE.GAME) {
                     firstFrog.reset();
                     secondFrog.reset();
+                    firstFrog.flipInitialized();
+                    secondFrog.flipInitialized();
                 }
                 currentState = STATE.MENU;
                 System.out.println("close button pressed");
@@ -425,6 +432,9 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         }
         if (key == 'w') {
             System.out.println(secondFrog.getCurrentX() + ", " + secondFrog.getCurrentY());
+        }
+        if (key == '-') {
+            currentState = STATE.END;
         }
     }
 
