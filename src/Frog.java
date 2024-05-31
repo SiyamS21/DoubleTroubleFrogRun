@@ -27,6 +27,10 @@ public class Frog {
         else if (move == 2) {
             currentX++;
         }
+
+        if (move < 0 && move > 2) {
+            currentY -= 1000;
+        }
     }
 
     public void reset() {

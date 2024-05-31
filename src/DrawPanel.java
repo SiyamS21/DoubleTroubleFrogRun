@@ -252,23 +252,36 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             ArrayList<ArrayList<Tile>> currentLevelLayout = currentLevel.getLayout();
             int currentYLevel = 400;
             for (int r = currentLevelLayout.size() - 1; r >= 0; r--) {
-                int frogR = 0;
                 for (int c = 0; c < 3; c++) {
                     if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                         g.drawImage(firstTileImage, 150 + (c * 80), currentYLevel, null);
+                    }
+                    else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
+                        g.drawImage(secondTileImage, 150 + (c * 80), currentYLevel, null);
+                    }
+                }
+                currentYLevel -= 70;
+            }
+            for (int r = currentLevelLayout.size() - 1; r >= 0; r--) {
+                int frogR = 0;
+                for (int c = 0; c < 3; c++) {
+                    if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                         if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
                             g.drawImage(firstFrog.getImage(), (150 + (firstFrog.getCurrentX() * 80) - 13), 400 - (firstFrog.getCurrentY() * 70) - 18, null);
                             if (!firstFrog.beenInitialized()) {
+                                System.out.println(c);
+                                System.out.println(frogR);
                                 firstFrog.setCurrentCoords(c, frogR);
                                 firstFrog.flipInitialized();
                             }
                         }
                     }
                     else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
-                        g.drawImage(secondTileImage, 150 + (c * 80), currentYLevel, null);
                         if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
                             g.drawImage(secondFrog.getImage(), (150 + (secondFrog.getCurrentX() * 80) - 13), 400 - (secondFrog.getCurrentY() * 70) - 18, null);
                             if (!secondFrog.beenInitialized()) {
+                                System.out.println(c);
+                                System.out.println(frogR);
                                 secondFrog.setCurrentCoords(c, frogR);
                                 secondFrog.flipInitialized();
                             }
@@ -276,7 +289,6 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     }
                     frogR++;
                 }
-                currentYLevel -= 70;
             }
         }
         if (currentState == STATE.FIRSTLETTERSELECT || currentState == STATE.SECONDLETTERSELECT) {

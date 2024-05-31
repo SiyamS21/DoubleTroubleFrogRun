@@ -122,7 +122,29 @@ public class Level {
             }
             return 2;
         }
-        return 10;
+        else {
+            zero = true;
+            two = true;
+
+            if (currentX == 0) {
+                zero = false;
+            }
+            else if (currentX == 2) {
+                two = false;
+            }
+
+            if (zero && (layout.get(currentY + 1).get(currentX - 1).getColor().equals("f") || layout.get(currentY + 1).get(currentX - 1).getColor().equals("s"))) {
+                return 0;
+            }
+            if (layout.get(currentY + 1).get(currentX).getColor().equals("f") || layout.get(currentY + 1).get(currentX).getColor().equals("s")) {
+                return 1;
+            }
+            if (two && (layout.get(currentY + 1).get(currentX + 1).getColor().equals("f") || layout.get(currentY + 1).get(currentX + 1).getColor().equals("s"))) {
+                return 2;
+            }
+
+            return 10;
+        }
     }
 
     public ArrayList<ArrayList<Tile>> getLayout() {
