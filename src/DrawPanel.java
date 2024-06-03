@@ -267,6 +267,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 for (int c = 0; c < 3; c++) {
                     if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                         if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
+                            System.out.println(c + ", " + r + " has first frog");
                             g.drawImage(firstFrog.getImage(), (150 + (firstFrog.getCurrentX() * 80) - 13), 400 - (firstFrog.getCurrentY() * 70) - 18, null);
                             if (!firstFrog.beenInitialized()) {
                                 System.out.println(c);
@@ -278,6 +279,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     }
                     else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                         if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
+                            System.out.println(c + ", " + frogR + " has second frog");
                             g.drawImage(secondFrog.getImage(), (150 + (secondFrog.getCurrentX() * 80) - 13), 400 - (secondFrog.getCurrentY() * 70) - 18, null);
                             if (!secondFrog.beenInitialized()) {
                                 System.out.println(c);
@@ -411,11 +413,27 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
 
         if (currentState == STATE.GAME) {
             if (key == firstFrogKey) {
-                firstFrog.move(currentLevel.findNextMove(true, firstFrog.getCurrentX(), firstFrog.getCurrentY()));
+                try {
+                    firstFrog.move(currentLevel.findNextMove(true, firstFrog.getCurrentX(), firstFrog.getCurrentY()));
+                } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                    firstFrog.reset();
+                    secondFrog.reset();
+                    firstFrog.flipInitialized();
+                    secondFrog.flipInitialized();
+                    currentState = STATE.END;
+                }
                 System.out.println("moved f to (" + firstFrog.getCurrentX() + ", " + firstFrog.getCurrentY() + ")");
             }
             if (key == secondFrogKey) {
-                secondFrog.move(currentLevel.findNextMove(false, secondFrog.getCurrentX(), secondFrog.getCurrentY()));
+                try {
+                    secondFrog.move(currentLevel.findNextMove(true, secondFrog.getCurrentX(), secondFrog.getCurrentY()));
+                } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                    firstFrog.reset();
+                    secondFrog.reset();
+                    firstFrog.flipInitialized();
+                    secondFrog.flipInitialized();
+                    currentState = STATE.END;
+                }
                 System.out.println("moved s to (" + secondFrog.getCurrentX() + ", " + secondFrog.getCurrentY() + ")");
             }
         }

@@ -35,6 +35,7 @@ public class Frog {
 
     public void reset() {
         currentY = 0;
+        currentX = 0;
     }
 
     public boolean isFirst() {

@@ -20,10 +20,12 @@ public class Tile {
     }
 
     public boolean isEnd() {
+        System.out.println("no end");
         if (info.length() == 1) {
             return false;
         }
         else if (info.substring(1, 2).equals("E")) {
+            System.out.println("end is " + info.substring(1, 2));
             return true;
         }
         return false;
