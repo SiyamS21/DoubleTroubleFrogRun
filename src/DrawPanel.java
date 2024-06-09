@@ -35,6 +35,9 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     private Rectangle helpButton;
     private Rectangle closeButton;
     private Rectangle tutorialButton;
+    private Rectangle levelOneButton;
+    private Rectangle levelTwoButton;
+    private Rectangle levelThreeButton;
     private Rectangle selectFirstButton;
     private Rectangle selectSecondButton;
     private String firstFrogColor;
@@ -48,6 +51,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     private char firstFrogKey;
     private char secondFrogKey;
     private Level currentLevel;
+    private int currentOffset;
     private enum STATE {
         MENU,
         LEVELSELECT,
@@ -56,13 +60,15 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         HELP,
         FIRSTLETTERSELECT,
         SECONDLETTERSELECT,
-        END
+        END,
+        LOSS
     }
     private STATE currentState = STATE.MENU;
 
 
 
     public DrawPanel() {
+        AudioPlayer.loopMusic("music");
         this.addMouseListener(this);
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -71,6 +77,9 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         helpButton = new Rectangle(400, 420, 32, 32);
         closeButton = new Rectangle(10, 10, 32, 32);
         tutorialButton = new Rectangle(200, 200, 30, 30);
+        levelOneButton = new Rectangle(200, 245, 30, 30);
+        levelTwoButton = new Rectangle(200, 290, 30, 30);
+        levelThreeButton = new Rectangle(200, 335, 30, 30);
         selectGreenButton = new Rectangle(20, 100, 75, 75);
         selectYellowButton = new Rectangle(20, 295, 75, 75);
         selectBlueButton = new Rectangle(100, 100, 75, 75);
@@ -84,6 +93,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         firstFrogKey = 'z';
         secondFrogKey = 'x';
         currentLevel = null;
+        currentOffset = 0;
         try {
             settingsImage = ImageIO.read(new File("images/gear.png"));
         } catch (IOException e) {
@@ -193,12 +203,18 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             g.drawImage(helpImage, (int)helpButton.getX(), (int)helpButton.getY(), null);
             g.drawImage(playImage, (int)playButton.getX() - 9, (int)playButton.getY() - 3, null);
         }
-        if (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.END) {
+        if (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.END || currentState == STATE.LOSS) {
             g.drawImage(closeImage, (int)closeButton.getX(), (int)closeButton.getY(), null);
         }
         if (currentState == STATE.LEVELSELECT) {
             g.drawRect((int)tutorialButton.getX(), (int)tutorialButton.getY(), (int)tutorialButton.width, (int)tutorialButton.height);
-            g.drawString("T", 210, 220);
+            g.drawString("T", (int)tutorialButton.getX() + 10, (int)tutorialButton.getY() + 20);
+            g.drawRect((int)levelOneButton.getX(), (int)levelOneButton.getY(), (int)levelOneButton.width, (int)levelOneButton.height);
+            g.drawString("1", (int)levelOneButton.getX() + 10, (int)levelOneButton.getY() + 20);
+            g.drawRect((int)levelTwoButton.getX(), (int)levelTwoButton.getY(), (int)levelTwoButton.width, (int)levelTwoButton.height);
+            g.drawString("2", (int)levelTwoButton.getX() + 10, (int)levelTwoButton.getY() + 20);
+            g.drawRect((int)levelThreeButton.getX(), (int)levelThreeButton.getY(), (int)levelThreeButton.width, (int)levelThreeButton.height);
+            g.drawString("3", (int)levelThreeButton.getX() + 10, (int)levelThreeButton.getY() + 20);
         }
         if (currentState == STATE.SETTINGS) {
             g.drawRect((int)selectGreenButton.getX(), (int)selectGreenButton.getY(), (int)selectGreenButton.getWidth(), (int)selectGreenButton.getHeight());
@@ -254,10 +270,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             for (int r = currentLevelLayout.size() - 1; r >= 0; r--) {
                 for (int c = 0; c < 3; c++) {
                     if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
-                        g.drawImage(firstTileImage, 150 + (c * 80), currentYLevel, null);
+                        g.drawImage(firstTileImage, 150 + (c * 80), currentYLevel + currentOffset, null);
                     }
                     else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
-                        g.drawImage(secondTileImage, 150 + (c * 80), currentYLevel, null);
+                        g.drawImage(secondTileImage, 150 + (c * 80), currentYLevel + currentOffset, null);
                     }
                 }
                 currentYLevel -= 70;
@@ -267,8 +283,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 for (int c = 0; c < 3; c++) {
                     if (currentLevelLayout.get(r).get(c).getColor().equals("f")) {
                         if (currentLevelLayout.get(r).get(c).hasFirstFrog()) {
-                            System.out.println(c + ", " + r + " has first frog");
-                            g.drawImage(firstFrog.getImage(), (150 + (firstFrog.getCurrentX() * 80) - 13), 400 - (firstFrog.getCurrentY() * 70) - 18, null);
+                            g.drawImage(firstFrog.getImage(), (150 + (firstFrog.getCurrentX() * 80) - 13), 400 - (firstFrog.getCurrentY() * 70) + currentOffset - 18, null);
                             if (!firstFrog.beenInitialized()) {
                                 System.out.println(c);
                                 System.out.println(frogR);
@@ -279,8 +294,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     }
                     else if (currentLevelLayout.get(r).get(c).getColor().equals("s")) {
                         if (currentLevelLayout.get(r).get(c).hasSecondFrog()) {
-                            System.out.println(c + ", " + frogR + " has second frog");
-                            g.drawImage(secondFrog.getImage(), (150 + (secondFrog.getCurrentX() * 80) - 13), 400 - (secondFrog.getCurrentY() * 70) - 18, null);
+                            g.drawImage(secondFrog.getImage(), (150 + (secondFrog.getCurrentX() * 80) - 13), 400 - (secondFrog.getCurrentY() * 70) + currentOffset - 18, null);
                             if (!secondFrog.beenInitialized()) {
                                 System.out.println(c);
                                 System.out.println(frogR);
@@ -297,8 +311,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             g.drawString("Press the key you would like to select", 13, 220);
         }
         if (currentState == STATE.END) {
-            g.drawString("Congratulations! You won the level!", 100, 200);
-
+            g.drawString("Congratulations! You won the level!", 50, 200);
+        }
+        if (currentState == STATE.LOSS) {
+            g.drawString("You lost! Try again!", 70, 200);
         }
     }
 
@@ -314,7 +330,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 currentState = STATE.HELP;
                 System.out.println("help button pressed");
             }
-            else if (closeButton.contains(clicked) && (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.GAME || currentState == STATE.END)) {
+            else if (closeButton.contains(clicked) && (currentState == STATE.SETTINGS || currentState == STATE.HELP || currentState == STATE.LEVELSELECT || currentState == STATE.GAME || currentState == STATE.END || currentState == STATE.LOSS)) {
                 if (currentState == STATE.GAME) {
                     firstFrog.reset();
                     secondFrog.reset();
@@ -328,10 +344,24 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 currentState = STATE.LEVELSELECT;
                 System.out.println("play button pressed");
             }
-            else if (tutorialButton.contains(clicked) && currentState == STATE.LEVELSELECT) {
+            else if (currentState == STATE.LEVELSELECT) {
                 currentState = STATE.GAME;
-                System.out.println("tutorial button pressed");
-                currentLevel = new Level("tutorial");
+                if (tutorialButton.contains(clicked)) {
+                    System.out.println("tutorial button pressed");
+                    currentLevel = new Level("tutorial");
+                }
+                else if (levelOneButton.contains(clicked)) {
+                    System.out.println("one button pressed");
+                    currentLevel = new Level("one");
+                }
+                else if (levelTwoButton.contains(clicked)) {
+                    System.out.println("two button pressed");
+                    currentLevel = new Level("two");
+                }
+                else if (levelThreeButton.contains(clicked)) {
+                    System.out.println("three button pressed");
+                    currentLevel = new Level("three");
+                }
             }
             else if (selectGreenButton.contains(clicked) && currentState == STATE.SETTINGS && !secondFrogColor.equals("green")) {
                 firstFrogColor = "green";
@@ -415,25 +445,51 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
             if (key == firstFrogKey) {
                 try {
                     firstFrog.move(currentLevel.findNextMove(true, firstFrog.getCurrentX(), firstFrog.getCurrentY()));
+                    if (firstFrog.getCurrentY() > secondFrog.getCurrentY() && firstFrog.getCurrentY() > 4) {
+                        currentOffset += 70;
+                    }
                 } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
                     firstFrog.reset();
                     secondFrog.reset();
                     firstFrog.flipInitialized();
                     secondFrog.flipInitialized();
+                    currentOffset = 0;
                     currentState = STATE.END;
                 }
+                /*if (currentState == STATE.GAME && !currentLevel.getLayout().get(firstFrog.getCurrentX()).get(firstFrog.getCurrentY()).getColor().equals("f")) {
+                    firstFrog.reset();
+                    secondFrog.reset();
+                    firstFrog.flipInitialized();
+                    secondFrog.flipInitialized();
+                    currentOffset = 0;
+                    AudioPlayer.playMusic("loss");
+                    currentState = STATE.LOSS;
+                }*/
                 System.out.println("moved f to (" + firstFrog.getCurrentX() + ", " + firstFrog.getCurrentY() + ")");
             }
             if (key == secondFrogKey) {
                 try {
                     secondFrog.move(currentLevel.findNextMove(true, secondFrog.getCurrentX(), secondFrog.getCurrentY()));
+                    if (secondFrog.getCurrentY() > firstFrog.getCurrentY() &&  secondFrog.getCurrentY() > 4) {
+                        currentOffset += 70;
+                    }
                 } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
                     firstFrog.reset();
                     secondFrog.reset();
                     firstFrog.flipInitialized();
                     secondFrog.flipInitialized();
+                    currentOffset = 0;
                     currentState = STATE.END;
                 }
+                /*if (currentState == STATE.GAME && !currentLevel.getLayout().get(secondFrog.getCurrentX()).get(secondFrog.getCurrentY()).getColor().equals("s")) {
+                    firstFrog.reset();
+                    secondFrog.reset();
+                    firstFrog.flipInitialized();
+                    secondFrog.flipInitialized();\
+                    currentOffset = 0;
+                    AudioPlayer.playMusic("loss");
+                    currentState = STATE.LOSS;
+                }*/
                 System.out.println("moved s to (" + secondFrog.getCurrentX() + ", " + secondFrog.getCurrentY() + ")");
             }
         }

@@ -31,6 +31,7 @@ public class Frog {
         if (move < 0 && move > 2) {
             currentY -= 1000;
         }
+        AudioPlayer.playMusic("dink");
     }
 
     public void reset() {

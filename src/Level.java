@@ -41,7 +41,6 @@ public class Level {
             }
             System.out.println("");
         }
-        System.out.println(layout.get(3).get(0).getColor());
     }
 
     // 0 = forward and left
