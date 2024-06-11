@@ -9,6 +9,7 @@ public class Frog {
     private int currentY;
     private BufferedImage image;
     private boolean initialized;
+    private boolean isAboveOther;
 
     public Frog(boolean f, String c, BufferedImage i) {
         first = f;
@@ -17,6 +18,7 @@ public class Frog {
         currentX = 0;
         currentY = 0;
         initialized = false;
+        isAboveOther = false;
     }
 
     public void move(int move) {
@@ -26,10 +28,6 @@ public class Frog {
         }
         else if (move == 2) {
             currentX++;
-        }
-
-        if (move < 0 && move > 2) {
-            currentY -= 1000;
         }
         AudioPlayer.playMusic("dink");
     }
@@ -86,5 +84,13 @@ public class Frog {
 
     public void flipInitialized() {
         initialized = !initialized;
+    }
+
+    public void setAboveOther(boolean choice) {
+        isAboveOther = choice;
+    }
+
+    public boolean getAboveOther() {
+        return isAboveOther;
     }
 }
