@@ -52,6 +52,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
     private char secondFrogKey;
     private Level currentLevel;
     private int currentOffset;
+    private boolean isLevelOne;
     private enum STATE {
         MENU,
         LEVELSELECT,
@@ -94,6 +95,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         secondFrogKey = 'x';
         currentLevel = null;
         currentOffset = 0;
+        isLevelOne = false;
         try {
             settingsImage = ImageIO.read(new File("images/gear.png"));
         } catch (IOException e) {
@@ -371,18 +373,22 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                 currentState = STATE.GAME;
                 if (tutorialButton.contains(clicked)) {
                     /*System.out.println("tutorial button pressed");*/
+                    isLevelOne = false;
                     currentLevel = new Level("tutorial");
                 }
                 else if (levelOneButton.contains(clicked)) {
                     /*System.out.println("one button pressed");*/
+                    isLevelOne = true;
                     currentLevel = new Level("one");
                 }
                 else if (levelTwoButton.contains(clicked)) {
                     /*System.out.println("two button pressed");*/
+                    isLevelOne = false;
                     currentLevel = new Level("two");
                 }
                 else if (levelThreeButton.contains(clicked)) {
                     /*System.out.println("three button pressed");*/
+                    isLevelOne = false;
                     currentLevel = new Level("three");
                 }
             }
@@ -474,7 +480,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                         firstFrog.move(currentLevel.findNextMove(true, firstFrog.getCurrentX(), firstFrog.getCurrentY()));
                         secondFrog.move(currentLevel.findNextMove(true, secondFrog.getCurrentX(), secondFrog.getCurrentY()));
                     }
-                    if (firstFrog.getCurrentY() >= secondFrog.getCurrentY() && firstFrog.getCurrentY() > 3) {
+                    if ((firstFrog.getCurrentY() > secondFrog.getCurrentY() && firstFrog.getCurrentY() > 3) || secondFrog.getAboveOther()) {
                         currentOffset += 70;
                     }
                     if (firstFrog.getCurrentY() == secondFrog.getCurrentY() && firstFrog.getCurrentX() == secondFrog.getCurrentX() && !secondFrog.getAboveOther()) {
@@ -522,10 +528,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     }
                     currentState = STATE.END;
                 }
-                /*if (currentState == STATE.GAME && !currentLevel.getLayout().get(firstFrog.getCurrentY()).get(firstFrog.getCurrentX()).getColor().equals("f") && !firstFrog.getAboveOther()) {
-                    System.out.println("u lost");
+                if (isLevelOne && currentState == STATE.GAME && !currentLevel.getLayout().get(firstFrog.getCurrentY()).get(firstFrog.getCurrentX()).getColor().equals("f") && !firstFrog.getAboveOther()) {
+                    /*System.out.println("u lost");
                     System.out.println(!currentLevel.getLayout().get(firstFrog.getCurrentY()).get(firstFrog.getCurrentX()).getColor().equals("f"));
-                    System.out.println(!firstFrog.getAboveOther());
+                    System.out.println(!firstFrog.getAboveOther());*/
                     firstFrog.reset();
                     secondFrog.reset();
                     firstFrog.flipInitialized();
@@ -554,7 +560,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     AudioPlayer.playMusic("loss");
                     currentState = STATE.LOSS;
                 }
-                else {
+                /*else {
                     System.out.println("u didnt lost");
                     System.out.println(!currentLevel.getLayout().get(firstFrog.getCurrentY()).get(firstFrog.getCurrentX()).getColor().equals("f"));
                     System.out.println(!firstFrog.getAboveOther());
@@ -570,7 +576,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                         secondFrog.move(currentLevel.findNextMove(false, secondFrog.getCurrentX(), secondFrog.getCurrentY()));
                         firstFrog.move(currentLevel.findNextMove(false, firstFrog.getCurrentX(), firstFrog.getCurrentY()));
                     }
-                    if (secondFrog.getCurrentY() >= firstFrog.getCurrentY() &&  secondFrog.getCurrentY() > 3) {
+                    if ((secondFrog.getCurrentY() > firstFrog.getCurrentY() &&  secondFrog.getCurrentY() > 3) || firstFrog.getAboveOther()) {
                         currentOffset += 70;
                     }
                     if (firstFrog.getCurrentY() == secondFrog.getCurrentY() && firstFrog.getCurrentX() == secondFrog.getCurrentX() && !firstFrog.getAboveOther()) {
@@ -618,10 +624,10 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     }
                     currentState = STATE.END;
                 }
-                /*if (currentState == STATE.GAME && !currentLevel.getLayout().get(secondFrog.getCurrentY()).get(secondFrog.getCurrentX()).getColor().equals("s") && !secondFrog.getAboveOther()) {
-                    System.out.println("u lost");
+                if (isLevelOne && currentState == STATE.GAME && !currentLevel.getLayout().get(secondFrog.getCurrentY()).get(secondFrog.getCurrentX()).getColor().equals("s") && !secondFrog.getAboveOther()) {
+                    /*System.out.println("u lost");
                     System.out.println(!currentLevel.getLayout().get(secondFrog.getCurrentY()).get(secondFrog.getCurrentX()).getColor().equals("s"));
-                    System.out.println(!secondFrog.getAboveOther());
+                    System.out.println(!secondFrog.getAboveOther());*/
                     firstFrog.reset();
                     secondFrog.reset();
                     firstFrog.flipInitialized();
@@ -650,7 +656,7 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
                     AudioPlayer.playMusic("loss");
                     currentState = STATE.LOSS;
                 }
-                else  {
+                /*else  {
                     System.out.println("u didnt lost");
                     System.out.println(!currentLevel.getLayout().get(secondFrog.getCurrentY()).get(secondFrog.getCurrentX()).getColor().equals("s"));
                     System.out.println(!secondFrog.getAboveOther());
