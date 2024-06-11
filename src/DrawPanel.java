@@ -232,12 +232,24 @@ class DrawPanel extends JPanel implements MouseListener, KeyListener {
         }
         if (currentState == STATE.SETTINGS) {
             g.drawRect((int)selectGreenButton.getX(), (int)selectGreenButton.getY(), (int)selectGreenButton.getWidth(), (int)selectGreenButton.getHeight());
+            g.setColor(Color.lightGray);
+            g.fillRect((int)selectGreenButton.getX(), (int)selectGreenButton.getY(), (int)selectGreenButton.getWidth(), (int)selectGreenButton.getHeight());
+            g.setColor(Color.black);
             g.drawImage(greenFrogImage, (int)selectGreenButton.getX() - 13, (int)selectGreenButton.getY() - 13, null);
             g.drawRect((int)selectYellowButton.getX(), (int)selectYellowButton.getY(), (int)selectYellowButton.getWidth(), (int)selectYellowButton.getHeight());
+            g.setColor(Color.lightGray);
+            g.fillRect((int)selectYellowButton.getX(), (int)selectYellowButton.getY(), (int)selectYellowButton.getWidth(), (int)selectYellowButton.getHeight());
+            g.setColor(Color.black);
             g.drawImage(yellowFrogImage, (int)selectYellowButton.getX() - 13, (int)selectYellowButton.getY() - 13, null);
             g.drawRect((int)selectBlueButton.getX(), (int)selectBlueButton.getY(), (int)selectBlueButton.getWidth(), (int)selectBlueButton.getHeight());
+            g.setColor(Color.lightGray);
+            g.fillRect((int)selectBlueButton.getX(), (int)selectBlueButton.getY(), (int)selectBlueButton.getWidth(), (int)selectBlueButton.getHeight());
+            g.setColor(Color.black);
             g.drawImage(blueFrogImage, (int)selectBlueButton.getX() - 13, (int)selectBlueButton.getY() - 13, null);
             g.drawRect((int)selectRedButton.getX(), (int)selectRedButton.getY(), (int)selectRedButton.getWidth(), (int)selectRedButton.getHeight());
+            g.setColor(Color.lightGray);
+            g.fillRect((int)selectRedButton.getX(), (int)selectRedButton.getY(), (int)selectRedButton.getWidth(), (int)selectRedButton.getHeight());
+            g.setColor(Color.black);
             g.drawImage(redFrogImage, (int)selectRedButton.getX() - 13, (int)selectRedButton.getY() - 13, null);
             g.setFont(new Font("Courier New", Font.BOLD, 15));
             g.drawString("Left click to choose the color of your first frog." , 10, 60);
